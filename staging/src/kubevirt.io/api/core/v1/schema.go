@@ -512,7 +512,7 @@ type Devices struct {
 type Graphics struct {
 	// Enables password on vnc connections
 	// +optional
-	Passwd *string `json:"passwd,omitempty"`
+	Passwd string `json:"passwd,omitempty"`
 }
 
 // Represent a subset of client devices that can be accessed by VMI. At the
