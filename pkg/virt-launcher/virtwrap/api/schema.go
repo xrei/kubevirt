@@ -1075,6 +1075,7 @@ type Graphics struct {
 	AutoPort      string          `xml:"autoport,attr,omitempty"`
 	DefaultMode   string          `xml:"defaultMode,attr,omitempty"`
 	Listen        *GraphicsListen `xml:"listen,omitempty"`
+	Passwd        string          `xml:"passwd,attr,omitempty"`
 	PasswdValidTo string          `xml:"passwdValidTo,attr,omitempty"`
 	Port          int32           `xml:"port,attr,omitempty"`
 	TLSPort       int             `xml:"tlsPort,attr,omitempty"`

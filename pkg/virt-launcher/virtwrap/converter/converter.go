@@ -1931,15 +1931,19 @@ func Convert_v1_VirtualMachineInstance_To_api_Domain(vmi *v1.VirtualMachineInsta
 				}
 			}
 		}
-		domain.Spec.Devices.Graphics = []api.Graphics{
-			{
-				Listen: &api.GraphicsListen{
-					Type:   "socket",
-					Socket: fmt.Sprintf("/var/run/kubevirt-private/%s/virt-vnc", vmi.ObjectMeta.UID),
-				},
-				Type: "vnc",
+		graphicDevice := api.Graphics{
+			Listen: &api.GraphicsListen{
+				Type:   "socket",
+				Socket: fmt.Sprintf("/var/run/kubevirt-private/%s/virt-vnc", vmi.ObjectMeta.UID),
 			},
+			Type: "vnc",
 		}
+
+		if graphics := vmi.Spec.Domain.Devices.Graphics; graphics != nil && graphics.Passwd != nil {
+			graphicDevice.Passwd = *graphics.Passwd
+		}
+
+		domain.Spec.Devices.Graphics = append([]api.Graphics{}, graphicDevice)
 	}
 
 	domainInterfaces, err := CreateDomainInterfaces(vmi, domain, c)
