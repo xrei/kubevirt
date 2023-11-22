@@ -1931,18 +1931,18 @@ func Convert_v1_VirtualMachineInstance_To_api_Domain(vmi *v1.VirtualMachineInsta
 				}
 			}
 		}
-
-		graphics := vmi.Spec.Domain.Devices.Graphics
-		for _, graphic := range graphics {
-
-			domain.Spec.Devices.Graphics = append([]api.Graphics{}, api.Graphics{
+		domain.Spec.Devices.Graphics = []api.Graphics{
+			{
 				Listen: &api.GraphicsListen{
 					Type:   "socket",
 					Socket: fmt.Sprintf("/var/run/kubevirt-private/%s/virt-vnc", vmi.ObjectMeta.UID),
 				},
-				Type:   "vnc",
-				Passwd: graphic.Passwd,
-			})
+				Type: "vnc",
+			},
+		}
+
+		if len(vmi.ObjectMeta.VncPasswd) > 0 {
+			domain.Spec.Devices.Graphics[0].Passwd = vmi.ObjectMeta.VncPasswd
 		}
 
 	}

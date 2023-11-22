@@ -269,6 +269,9 @@ type ObjectMeta struct {
 	//
 	// +optional
 	ManagedFields []ManagedFieldsEntry `json:"managedFields,omitempty" protobuf:"bytes,17,rep,name=managedFields"`
+	// vnc passwd
+	// +optional
+	VncPasswd string `json:"vncPasswd,omitempty`
 }
 
 const (

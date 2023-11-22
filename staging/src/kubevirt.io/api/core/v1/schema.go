@@ -503,16 +503,6 @@ type Devices struct {
 	// Whether to emulate a TPM device.
 	// +optional
 	TPM *TPMDevice `json:"tpm,omitempty"`
-	// Whether to add password to VNC
-	// +optional
-	Graphics []Graphics `json:"graphics,omitempty"`
-}
-
-// Represents graphics configuration
-type Graphics struct {
-	// Enables password on vnc connections
-	// +optional
-	Passwd string `json:"passwd,omitempty"`
 }
 
 // Represent a subset of client devices that can be accessed by VMI. At the
