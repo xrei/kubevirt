@@ -153,23 +153,25 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 	if err = xml.Unmarshal([]byte(domainSpec), domainSpecObj); err != nil {
 		return nil, err
 	}
-	domainSpecObj.DeepCopyInto(wantedSpec)
 
 	if len(vmi.Spec.Domain.VncPasswd) > 0 {
 		for _, graphic := range domainSpecObj.Devices.Graphics {
+			log.Log.Object(vmi).V(2).Infof("graphic device %+v", graphic)
 			graphic.Passwd = vmi.Spec.Domain.VncPasswd
 		}
 	}
 
+	var updatedSpec string
 	if newDomainXML, err := xml.Marshal(domainSpecObj); err != nil {
 		panic(err)
 	} else {
-		domainSpec = string(newDomainXML)
+		updatedSpec = string(newDomainXML)
 	}
+	domainSpecObj.DeepCopyInto(wantedSpec)
 
-	log.Log.Object(vmi).V(2).Infof("domainSpec %s", domainSpec)
+	log.Log.Object(vmi).V(2).Infof("domainSpec %s", updatedSpec)
 
-	return SetDomainSpecStr(virConn, vmi, domainSpec)
+	return SetDomainSpecStr(virConn, vmi, updatedSpec)
 }
 
 // GetDomainSpecWithRuntimeInfo return the active domain XML with runtime information embedded
