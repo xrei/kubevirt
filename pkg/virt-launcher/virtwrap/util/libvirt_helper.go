@@ -146,6 +146,7 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 		return nil, err
 	}
 
+	log.Log.Object(vmi).V(2).Infof("domainSpec %s", domainSpec)
 	// update wantedSpec to reflect changes made to domain spec by hooks
 	domainSpecObj := &api.DomainSpec{}
 	if err = xml.Unmarshal([]byte(domainSpec), domainSpecObj); err != nil {

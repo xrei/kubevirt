@@ -1940,7 +1940,6 @@ func Convert_v1_VirtualMachineInstance_To_api_Domain(vmi *v1.VirtualMachineInsta
 		}
 
 		if graphics := vmi.Spec.Domain.Devices.Graphics; graphics != nil && len(graphics.Passwd) != 0 {
-			log.Log.Object(vmi).Infof("passwd : %s", graphics.Passwd)
 			graphicDevice.Passwd = graphics.Passwd
 		}
 
