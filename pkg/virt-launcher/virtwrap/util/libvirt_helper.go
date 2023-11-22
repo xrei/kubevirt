@@ -165,8 +165,8 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 	log.Log.Object(vmi).V(2).Infof("domainSpecObj.Devices.Graphics before updated %+v", domainSpecObj.Devices.Graphics)
 
 	var updatedSpec string
-	if newDomainXML, err := xml.Marshal(domainSpecObj); err != nil {
-		panic(err)
+	if newDomainXML, err := xml.MarshalIndent(domainSpecObj, "", "\t"); err != nil {
+		return nil, err
 	} else {
 		log.Log.Object(vmi).V(2).Infof("newDomainXML %s", newDomainXML)
 
