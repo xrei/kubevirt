@@ -140,6 +140,13 @@ func SetDomainSpecStr(virConn cli.Connection, vmi *v1.VirtualMachineInstance, wa
 }
 
 func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineInstance, wantedSpec *api.DomainSpec) (cli.VirDomain, error) {
+	log.Log.Object(vmi).V(2).Infof("VMI spec: check passwd %v", vmi.Spec.Domain.VncPasswd)
+
+	if len(vmi.Spec.Domain.VncPasswd) > 0 {
+		for _, graphic := range wantedSpec.Devices.Graphics {
+			graphic.Passwd = vmi.Spec.Domain.VncPasswd
+		}
+	}
 	hooksManager := getHookManager()
 	domainSpec, err := hooksManager.OnDefineDomain(wantedSpec, vmi)
 	if err != nil {
@@ -153,8 +160,6 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 		return nil, err
 	}
 	domainSpecObj.DeepCopyInto(wantedSpec)
-
-	log.Log.Object(vmi).V(2).Infof("VMI spec: check passwd %v", vmi.Spec.Domain.VncPasswd)
 
 	return SetDomainSpecStr(virConn, vmi, domainSpec)
 }
