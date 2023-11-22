@@ -141,8 +141,6 @@ func SetDomainSpecStr(virConn cli.Connection, vmi *v1.VirtualMachineInstance, wa
 }
 
 func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineInstance, wantedSpec *api.DomainSpec) (cli.VirDomain, error) {
-	log.Log.Object(vmi).V(2).Infof("VMI spec: check passwd %v", vmi.Spec.Domain.VncPasswd)
-
 	hooksManager := getHookManager()
 	domainSpec, err := hooksManager.OnDefineDomain(wantedSpec, vmi)
 	if err != nil {
@@ -158,26 +156,16 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 	if len(vmi.Spec.Domain.VncPasswd) > 0 {
 		for i := range domainSpecObj.Devices.Graphics {
 			domainSpecObj.Devices.Graphics[i].Passwd = vmi.Spec.Domain.VncPasswd
-			log.Log.Object(vmi).V(2).Infof("graphic device %+v", domainSpecObj.Devices.Graphics[i])
 		}
 	}
-
-	log.Log.Object(vmi).V(2).Infof("domainSpecObj.Devices.Graphics before updated %+v", domainSpecObj.Devices.Graphics)
 
 	var updatedSpec string
 	if newDomainXML, err := xml.MarshalIndent(domainSpecObj, "", "\t"); err != nil {
 		return nil, err
 	} else {
-		log.Log.Object(vmi).V(2).Infof("newDomainXML %s", newDomainXML)
-
 		updatedSpec = string(newDomainXML)
 	}
 	domainSpecObj.DeepCopyInto(wantedSpec)
-
-	log.Log.Object(vmi).V(2).Infof("domainSpecObj.Devices.Graphics %+v", domainSpecObj.Devices.Graphics)
-	log.Log.Object(vmi).V(2).Infof("wantedSpec.Devices.Graphics %+v", wantedSpec.Devices.Graphics)
-
-	log.Log.Object(vmi).V(2).Infof("updatedSpec %s", updatedSpec)
 
 	return SetDomainSpecStr(virConn, vmi, updatedSpec)
 }
