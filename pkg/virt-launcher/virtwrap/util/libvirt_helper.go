@@ -153,8 +153,9 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 		return nil, err
 	}
 	domainSpecObj.DeepCopyInto(wantedSpec)
-	if vmi.Spec.Domain.Devices.Graphics != nil {
-		log.Log.Object(vmi).V(2).Infof("check passwd %v", vmi.Spec.Domain.Devices.Graphics.Passwd)
+
+	for _, graphic := range vmi.Spec.Domain.Devices.Graphics {
+		log.Log.Object(vmi).V(2).Infof("check passwd %v", graphic.Passwd)
 	}
 
 	return SetDomainSpecStr(virConn, vmi, domainSpec)

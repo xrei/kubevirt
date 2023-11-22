@@ -505,7 +505,7 @@ type Devices struct {
 	TPM *TPMDevice `json:"tpm,omitempty"`
 	// Whether to add password to VNC
 	// +optional
-	Graphics *Graphics `json:"graphics,omitempty"`
+	Graphics []Graphics `json:"graphics,omitempty"`
 }
 
 // Represents graphics configuration
