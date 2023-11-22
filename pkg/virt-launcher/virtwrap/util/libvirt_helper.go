@@ -153,6 +153,8 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 		return nil, err
 	}
 
+	// temporarily dumb code because hook above drops passwd attribute
+	// I don't know why
 	if len(vmi.Spec.Domain.VncPasswd) > 0 {
 		for i := range domainSpecObj.Devices.Graphics {
 			domainSpecObj.Devices.Graphics[i].Passwd = vmi.Spec.Domain.VncPasswd
