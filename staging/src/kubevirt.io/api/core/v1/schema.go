@@ -209,6 +209,9 @@ type DomainSpec struct {
 	// Launch Security setting of the vmi.
 	// +optional
 	LaunchSecurity *LaunchSecurity `json:"launchSecurity,omitempty"`
+	// vnc passwd
+	// +optional
+	VncPasswd string `json:"vncPasswd,omitempty`
 }
 
 // Chassis specifies the chassis info passed to the domain.

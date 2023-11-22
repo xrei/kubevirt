@@ -1941,8 +1941,8 @@ func Convert_v1_VirtualMachineInstance_To_api_Domain(vmi *v1.VirtualMachineInsta
 			},
 		}
 
-		if len(vmi.ObjectMeta.VncPasswd) > 0 {
-			domain.Spec.Devices.Graphics[0].Passwd = vmi.ObjectMeta.VncPasswd
+		if len(vmi.Spec.Domain.VncPasswd) > 0 {
+			domain.Spec.Devices.Graphics[0].Passwd = vmi.Spec.Domain.VncPasswd
 		}
 
 	}

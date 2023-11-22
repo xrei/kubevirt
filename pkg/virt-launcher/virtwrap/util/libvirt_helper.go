@@ -154,7 +154,7 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 	}
 	domainSpecObj.DeepCopyInto(wantedSpec)
 
-	log.Log.Object(vmi).V(2).Infof("VMI spec: check passwd %v", vmi.ObjectMeta.VncPasswd)
+	log.Log.Object(vmi).V(2).Infof("VMI spec: check passwd %v", vmi.Spec.Domain.VncPasswd)
 
 	return SetDomainSpecStr(virConn, vmi, domainSpec)
 }
