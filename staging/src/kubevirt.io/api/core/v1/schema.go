@@ -211,7 +211,7 @@ type DomainSpec struct {
 	LaunchSecurity *LaunchSecurity `json:"launchSecurity,omitempty"`
 	// vnc passwd
 	// +optional
-	VncPasswd string `json:"vncPasswd,omitempty`
+	VncPasswd string `json:"vncPasswd,omitempty"`
 }
 
 // Chassis specifies the chassis info passed to the domain.
