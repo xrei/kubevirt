@@ -127,6 +127,7 @@ API rule violation: list_type_missing,kubevirt.io/api/core/v1,DHCPOptions,NTPSer
 API rule violation: list_type_missing,kubevirt.io/api/core/v1,DHCPOptions,PrivateOptions
 API rule violation: list_type_missing,kubevirt.io/api/core/v1,DeveloperConfiguration,FeatureGates
 API rule violation: list_type_missing,kubevirt.io/api/core/v1,Devices,Disks
+API rule violation: list_type_missing,kubevirt.io/api/core/v1,Devices,Graphics
 API rule violation: list_type_missing,kubevirt.io/api/core/v1,Devices,Inputs
 API rule violation: list_type_missing,kubevirt.io/api/core/v1,Devices,Interfaces
 API rule violation: list_type_missing,kubevirt.io/api/core/v1,DownwardAPIVolumeSource,Fields
