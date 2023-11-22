@@ -156,9 +156,9 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 	}
 
 	if len(vmi.Spec.Domain.VncPasswd) > 0 {
-		for _, graphic := range domainSpecObj.Devices.Graphics {
-			graphic.Passwd = vmi.Spec.Domain.VncPasswd
-			log.Log.Object(vmi).V(2).Infof("graphic device %+v", graphic)
+		for i := range domainSpecObj.Devices.Graphics {
+			domainSpecObj.Devices.Graphics[i].Passwd = vmi.Spec.Domain.VncPasswd
+			log.Log.Object(vmi).V(2).Infof("graphic device %+v", domainSpecObj.Devices.Graphics[i])
 		}
 	}
 
