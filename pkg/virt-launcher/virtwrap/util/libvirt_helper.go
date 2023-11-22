@@ -131,6 +131,7 @@ func ConvReason(status libvirt.DomainState, reason int) api.StateChangeReason {
 // base64.StdEncoding.EncodeToString
 func SetDomainSpecStr(virConn cli.Connection, vmi *v1.VirtualMachineInstance, wantedSpec string) (cli.VirDomain, error) {
 	log.Log.Object(vmi).V(2).Infof("Domain XML generated. Base64 dump %s", base64.StdEncoding.EncodeToString([]byte(wantedSpec)))
+
 	dom, err := virConn.DomainDefineXML(wantedSpec)
 	if err != nil {
 		log.Log.Object(vmi).Reason(err).Error("Defining the VirtualMachineInstance failed.")
@@ -156,8 +157,8 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 
 	if len(vmi.Spec.Domain.VncPasswd) > 0 {
 		for _, graphic := range domainSpecObj.Devices.Graphics {
-			log.Log.Object(vmi).V(2).Infof("graphic device %+v", graphic)
 			graphic.Passwd = vmi.Spec.Domain.VncPasswd
+			log.Log.Object(vmi).V(2).Infof("graphic device %+v", graphic)
 		}
 	}
 
@@ -165,11 +166,16 @@ func SetDomainSpecStrWithHooks(virConn cli.Connection, vmi *v1.VirtualMachineIns
 	if newDomainXML, err := xml.Marshal(domainSpecObj); err != nil {
 		panic(err)
 	} else {
+		log.Log.Object(vmi).V(2).Infof("newDomainXML %s", newDomainXML)
+
 		updatedSpec = string(newDomainXML)
 	}
 	domainSpecObj.DeepCopyInto(wantedSpec)
 
-	log.Log.Object(vmi).V(2).Infof("domainSpec %s", updatedSpec)
+	log.Log.Object(vmi).V(2).Infof("domainSpecObj.Devices.Graphics %+v", domainSpecObj.Devices.Graphics)
+	log.Log.Object(vmi).V(2).Infof("wantedSpec.Devices.Graphics %+v", wantedSpec.Devices.Graphics)
+
+	log.Log.Object(vmi).V(2).Infof("updatedSpec %s", updatedSpec)
 
 	return SetDomainSpecStr(virConn, vmi, updatedSpec)
 }
