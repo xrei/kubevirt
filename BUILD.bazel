@@ -190,6 +190,7 @@ container_bundle(
         # cmd images
         "$(container_prefix)/$(image_prefix)sidecar-shim:$(container_tag)": "//cmd/sidecars:sidecar-shim-image",
         "$(container_prefix)/$(image_prefix)example-hook-sidecar:$(container_tag)": "//cmd/sidecars/smbios:example-hook-sidecar-image",
+        "$(container_prefix)/$(image_prefix)sidecar-hook-vnc:$(container_tag)": "//cmd/sidecars/vnc-pwd:sidecar-hook-vnc-image",
         "$(container_prefix)/$(image_prefix)example-disk-mutation-hook-sidecar:$(container_tag)": "//cmd/sidecars/disk-mutation:example-disk-mutation-hook-sidecar-image",
         "$(container_prefix)/$(image_prefix)example-cloudinit-hook-sidecar:$(container_tag)": "//cmd/sidecars/cloudinit:example-cloudinit-hook-sidecar-image",
         "$(container_prefix)/$(image_prefix)network-slirp-binding:$(container_tag)": "//cmd/sidecars/network-slirp-binding:network-slirp-binding-image",

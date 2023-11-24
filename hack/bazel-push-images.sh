@@ -35,6 +35,7 @@ default_targets="
     libguestfs-tools
     pr-helper
     example-hook-sidecar
+    sidecar-hook-vnc
     example-disk-mutation-hook-sidecar
     example-cloudinit-hook-sidecar
     alpine-container-disk-demo

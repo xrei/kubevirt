@@ -73,6 +73,7 @@ const (
 	VmiMasquerade               = "vmi-masquerade"
 	VmiSRIOV                    = "vmi-sriov"
 	VmiWithHookSidecar          = "vmi-with-sidecar-hook"
+	VmiWithHookSidecarVnc       = "vmi-with-sidecar-hook-vnc"
 	VmiWithHookSidecarConfigMap = "vmi-with-sidecar-hook-configmap"
 	VmiMultusPtp                = "vmi-multus-ptp"
 	VmiMultusMultipleNet        = "vmi-multus-multiple-net"
@@ -1191,6 +1192,20 @@ func GetVMIWithHookSidecar() *v1.VirtualMachineInstance {
 	vmi.ObjectMeta.Annotations = map[string]string{
 		"hooks.kubevirt.io/hookSidecars":              fmt.Sprintf("[{\"args\": [\"--version\", \"v1alpha2\"], \"image\": \"%s/example-hook-sidecar:%s\"}]", DockerPrefix, DockerTag),
 		"smbios.vm.kubevirt.io/baseBoardManufacturer": "Radical Edward",
+	}
+	return vmi
+}
+
+func GetVMIWithHookSidecarVnc() *v1.VirtualMachineInstance {
+	vmi := getBaseVMI(VmiWithHookSidecarVnc)
+	vmi.Spec.Domain.Resources.Requests[k8sv1.ResourceMemory] = resource.MustParse("1024M")
+
+	initFedora(&vmi.Spec)
+	addNoCloudDiskWitUserData(&vmi.Spec, generateCloudConfigString(cloudConfigUserPassword))
+
+	vmi.ObjectMeta.Annotations = map[string]string{
+		"hooks.kubevirt.io/hookSidecars": fmt.Sprintf("[{\"args\": [\"--version\", \"v1alpha2\"], \"image\": \"%s/sidecar-hook-vnc:%s\"}]", DockerPrefix, DockerTag),
+		"vncPasswd":                      "kek",
 	}
 	return vmi
 }
