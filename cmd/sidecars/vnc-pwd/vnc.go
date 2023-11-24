@@ -71,8 +71,6 @@ func onDefineDomain(vmiJSON, domainXML []byte) (string, error) {
 	}
 
 	if vncPass, found := annotations[vncPwd]; found {
-		log.Printf("vnc passwd %s", vncPass)
-
 		domainSpec.Devices.Graphics[0].Passwd = vncPass
 	}
 
