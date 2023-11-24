@@ -360,6 +360,15 @@ container_push(
 )
 
 container_push(
+    name = "push-sidecar-hook-vnc",
+    format = "Docker",
+    image = "//cmd/sidecars/vnc-pwd:sidecar-hook-vnc-image",
+    registry = "$(container_prefix)",
+    repository = "$(image_prefix)example-sidecar-hook-vnc",
+    tag = "$(container_tag)",
+)
+
+container_push(
     name = "push-example-disk-mutation-hook-sidecar",
     format = "Docker",
     image = "//cmd/sidecars/disk-mutation:example-disk-mutation-hook-sidecar-image",
