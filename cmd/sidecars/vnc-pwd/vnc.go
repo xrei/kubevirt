@@ -37,6 +37,7 @@ const (
 	vncPwd = "vncPasswd"
 )
 
+// Extend DomainSpec because kubevirt does not natievly support passwd attribue
 type Spec struct {
 	api.DomainSpec
 	Devices Devices `xml:"devices"`
@@ -47,6 +48,7 @@ type Devices struct {
 	Graphics []Graphics `xml:"graphics"`
 }
 
+// Extend Graphics to support passwd attribute
 type Graphics struct {
 	api.Graphics
 	Passwd string `xml:"passwd,attr,omitempty"`
@@ -55,21 +57,26 @@ type Graphics struct {
 func onDefineDomain(vmiJSON, domainXML []byte) (string, error) {
 	log.Print("Hook's onDefineDomain callback method has been called vnc.go")
 
+	// get vmi spec from .yaml
 	vmiSpec := vmSchema.VirtualMachineInstance{}
 	if err := json.Unmarshal(vmiJSON, &vmiSpec); err != nil {
 		return "", fmt.Errorf("Failed to unmarshal given VMI spec: %s %s", err, string(vmiJSON))
 	}
 
+	// populate domainSpec with original xml
 	domainSpec := Spec{}
 	if err := xml.Unmarshal(domainXML, &domainSpec); err != nil {
 		return "", fmt.Errorf("Failed to unmarshal given Domain spec: %s %s", err, string(domainXML))
 	}
 
+	// Check if in annotations declared vncPasswd
 	annotations := vmiSpec.GetAnnotations()
 	if _, found := annotations[vncPwd]; !found {
 		return string(domainXML), nil
 	}
 
+	// Set passwd attribute from annotations to domainSpec
+	// There is always default graphic device exist
 	if vncPass, found := annotations[vncPwd]; found {
 		domainSpec.Devices.Graphics[0].Passwd = vncPass
 	}
@@ -99,5 +106,7 @@ func main() {
 		logger.Printf("onDefineDomain failed: %s", err)
 		panic(err)
 	}
+
+	// Hook will use output as new xml
 	fmt.Println(domainXML)
 }
